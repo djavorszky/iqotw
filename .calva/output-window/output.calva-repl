@@ -1,0 +1,63 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+c o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Connecting ...
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS: 
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉iqotw.core꞉>  ; Use `alt+enter` to evaluate
+; Syntax error compiling at (src/iqotw/2021/week35.clj:25:3).
+; Unable to resolve symbol: first in this context
+clj꞉iqotw.2021.week35꞉> 
+; Evaluating file: week35.clj
+nil
+clj꞉iqotw.2021.week35꞉> 
+; Execution error (ArityException) at iqotw.2021.week35/eval2046 (form-init15212353694683088261.clj:25).
+; Wrong number of args (2) passed to: clojure.core/first--5384
+clj꞉iqotw.2021.week35꞉> 
+; Evaluating file: week35_test.clj
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:8:10).
+; Unable to resolve symbol: prefix-words in this context
+; Evaluation of file week35_test.clj failed: class clojure.lang.Compiler$CompilerException
+
+clj꞉iqotw.2021.week35꞉> 
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:8:10).
+; Unable to resolve symbol: prefix-words in this context
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:5:1).
+; No such namespace: test
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:1:1).
+; Found lib name 'clojure.test' containing period with prefix 'quote'.  lib names inside prefix lists must not contain periods
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:11:5).
+; No such namespace: test
+clj꞉iqotw.2021.week35-test꞉> 
+nil
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:9:7).
+; No such var: lib/prefix-words
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:9:7).
+; No such var: lib/prefix-words
+clj꞉iqotw.2021.week35-test꞉> 
+; Evaluating file: week35_test.clj
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:9:7).
+; No such var: lib/prefix-words
+; Evaluation of file week35_test.clj failed: class clojure.lang.Compiler$CompilerException
+
+clj꞉iqotw.2021.week35-test꞉> 
+clj꞉iqotw.2021.week35-test꞉> 
+; Syntax error compiling at (test/iqotw/2021/week35_test.clj:9:7).
+; No such var: lib/prefix-words
+clj꞉iqotw.2021.week35-test꞉> 
