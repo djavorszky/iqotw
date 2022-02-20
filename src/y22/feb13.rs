@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 // Task: Given a QWERTY keyboard grid and a remote control with arrows and a “select” button,
 // write a function that returns the buttons you have to press to type a certain word.
 // The cursor will always start in the upper left at the letter Q.
@@ -16,7 +14,7 @@ pub fn remote_control(word: &str) -> String {
         .fold(vec![], |mut acc, c| {
             let next_location = keyboard
                 .location_of(c)
-                .expect(format!("keyboard has no {c} key").as_str());
+                .unwrap_or_else(|| panic!("keyboard has no {c} key"));
 
             let instructions = keyboard.go_to(&cursor, &next_location);
 
@@ -127,17 +125,6 @@ impl<T: KeyMap> Keyboard<T> {
 
     fn location_of(&self, c: char) -> Option<Location> {
         self.keys.location_of(c)
-    }
-}
-
-struct Key {
-    code: char,
-    loc: Location,
-}
-
-impl Key {
-    pub fn new(code: char, loc: Location) -> Self {
-        Self { code, loc }
     }
 }
 
