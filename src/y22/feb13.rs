@@ -11,14 +11,15 @@ pub fn remote_control(word: &str) -> String {
         .expect("keyboard doesn't have a q key");
 
     word.chars()
-        .fold(vec![], |mut acc, c| {
-            let next_location = keyboard
+        .map(|c| {
+            keyboard
                 .location_of(c)
-                .unwrap_or_else(|| panic!("keyboard has no {c} key"));
+                .unwrap_or_else(|| panic!("keyboard has no {c} key"))
+        })
+        .fold(vec![], |mut acc, loc| {
+            let instructions = keyboard.go_to(&cursor, &loc);
 
-            let instructions = keyboard.go_to(&cursor, &next_location);
-
-            cursor = next_location;
+            cursor = loc;
 
             acc.push(instructions);
             acc
