@@ -10,3 +10,7 @@ check:
 # Runs unit tests
 test:
 	cargo test --locked
+
+# Runs the benchmarks
+bench:
+  cargo bench --locked
