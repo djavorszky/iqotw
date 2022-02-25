@@ -12,5 +12,5 @@ test:
 	cargo test --locked
 
 # Runs the benchmarks
-bench:
-  cargo bench --locked
+bench filter='':
+  cargo bench --locked -- {{filter}}
