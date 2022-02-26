@@ -8,20 +8,16 @@ pub fn longest_sub_seq(input: &[i32]) -> usize {
     let mut clone: Vec<i32> = input.iter().cloned().collect();
     clone.sort();
 
-    let mut counts = Vec::new();
-
-    let mut current_count = 1;
-    clone.windows(2).for_each(|w| {
-        if w[1] - w[0] == 1 {
-            current_count += 1;
-        } else {
-            counts.push(current_count);
-            current_count = 1;
-        }
-    });
-    counts.push(current_count);
-
-    counts.into_iter().max().unwrap()
+    clone
+        .windows(2)
+        .fold((1, 1), |acc, w| {
+            if w[1] - w[0] == 1 {
+                (acc.0, acc.1 + 1)
+            } else {
+                (acc.0.max(acc.1), 1)
+            }
+        })
+        .0
 }
 
 pub fn longest_sub_seq_map(input: &[i32]) -> usize {
