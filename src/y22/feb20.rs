@@ -5,8 +5,8 @@
 use std::collections::HashSet;
 
 pub fn longest_sub_seq(input: &[i32]) -> usize {
-    let mut clone: Vec<i32> = input.iter().cloned().collect();
-    clone.sort();
+    let mut clone: Vec<i32> = input.to_vec();
+    clone.sort_unstable();
 
     clone
         .windows(2)
