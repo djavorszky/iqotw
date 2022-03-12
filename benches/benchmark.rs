@@ -2,6 +2,10 @@ use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criteri
 
 use iqotw::y22::feb13::*;
 use iqotw::y22::feb20::*;
+use iqotw::y22::mar7::*;
+
+use std::collections::HashMap;
+use std::hash::Hash;
 
 fn feb13_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("keyboard_instructions");
@@ -49,7 +53,64 @@ fn feb20_benchmark(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, feb13_benchmark, feb20_benchmark);
+fn mar7_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("mar_7");
+
+    let thousand: Vec<i32> = include_str!("random-1000.txt")
+        .split(" ")
+        .map(|n| n.parse::<i32>().unwrap())
+        .collect();
+
+    group.bench_with_input("cmap-insert", &thousand, |b, input| {
+        let mut cmap: CMap<usize, &i32> = CMap::new();
+
+        b.iter(|| {
+            input
+                .iter()
+                .enumerate()
+                .for_each(|(idx, num)| cmap.insert(idx, num))
+        })
+    });
+
+    group.bench_with_input("hashmap-insert", &thousand, |b, input| {
+        let mut hash_map: HashMap<usize, &i32> = HashMap::new();
+        b.iter(|| {
+            input.iter().enumerate().for_each(|(idx, num)| {
+                hash_map.insert(idx, num);
+            })
+        })
+    });
+
+    group.bench_with_input("cmap-get", &thousand, |b, input| {
+        let mut cmap: CMap<usize, &i32> = CMap::new();
+        input
+            .iter()
+            .enumerate()
+            .for_each(|(idx, num)| cmap.insert(idx, num));
+
+        b.iter(|| {
+            input.iter().enumerate().for_each(|(idx, _)| {
+                cmap.get(idx);
+            })
+        })
+    });
+
+    group.bench_with_input("hashmap-get", &thousand, |b, input| {
+        let mut hash_map: HashMap<usize, &i32> = HashMap::new();
+        input.iter().enumerate().for_each(|(idx, num)| {
+            hash_map.insert(idx, num);
+        });
+        b.iter(|| {
+            input.iter().enumerate().for_each(|(idx, _)| {
+                hash_map.get(&idx);
+            })
+        })
+    });
+
+    group.finish();
+}
+
+criterion_group!(benches, feb13_benchmark, feb20_benchmark, mar7_benchmark);
 criterion_main!(benches);
 
 // TODO(Dan) - check benchmark result and also what else can be done. (optimize the thing.)
