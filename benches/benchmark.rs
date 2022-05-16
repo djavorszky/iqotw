@@ -1,3 +1,4 @@
+use iqotw::y22::may2::sac;
 use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 
 use iqotw::y22::feb13::*;
@@ -5,7 +6,7 @@ use iqotw::y22::feb20::*;
 use iqotw::y22::mar7::*;
 
 use std::collections::HashMap;
-use std::hash::Hash;
+
 
 fn feb13_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("keyboard_instructions");
@@ -110,7 +111,18 @@ fn mar7_benchmark(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(benches, feb13_benchmark, feb20_benchmark, mar7_benchmark);
+fn may2_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("simple_autocorrect");
+
+    // Note: this requires ubuntu package wordlist or e.g.: wbritish to be installed
+    let words: Vec<String> = include_str!("/usr/share/dict/words").lines().map(|w| w.to_string()).collect();
+
+    group.bench_function("wbritish", |b| b.iter(|| sac(black_box(&words), black_box("berry"))));
+
+    group.finish();
+}
+
+criterion_group!(benches, feb13_benchmark, feb20_benchmark, mar7_benchmark, may2_benchmark);
 criterion_main!(benches);
 
 // TODO(Dan) - check benchmark result and also what else can be done. (optimize the thing.)
