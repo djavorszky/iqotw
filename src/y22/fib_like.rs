@@ -82,6 +82,7 @@ mod fib_iterator_tests {
 /// Given a sequence, determine if the sequence is “Fibonacci-like”. A sequence is considered to be Fibonacci-like if:
 /// 1. It has at least 3 items
 /// 2. Each item is the sum of the previous two items
+/// 3. The second item in the list is greater than, or equal to the first item
 ///
 /// ```
 /// use iqotw::y22::fib_like::is_fibonacci_like;
@@ -116,6 +117,12 @@ mod is_fibonacci_like_tests {
     fn test_question_cases() {
         assert!(is_fibonacci_like(&[10, 20, 30, 50, 80]));
         assert!(is_fibonacci_like(&[3, 7, 10, 17, 27]));
+    }
+
+    #[test]
+    fn test_fibonacci_sequence() {
+        assert!(is_fibonacci_like(&[1, 1, 2, 3, 5, 8, 13]));
+        assert!(is_fibonacci_like(&[0, 1, 1, 2, 3, 5, 8, 13]));
     }
 
     #[test]
