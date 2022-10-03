@@ -1,12 +1,11 @@
-use iqotw::y22::may2::sac;
 use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 
 use iqotw::y22::feb13::*;
 use iqotw::y22::feb20::*;
+use iqotw::y22::fib_like::*;
 use iqotw::y22::mar7::*;
 
 use std::collections::HashMap;
-
 
 fn feb13_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("keyboard_instructions");
@@ -22,7 +21,7 @@ fn feb20_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("feb_20");
 
     let thousand = include_str!("random-1000.txt")
-        .split(" ")
+        .split(' ')
         .map(|n| n.parse::<i32>().unwrap())
         .collect();
 
@@ -42,12 +41,12 @@ fn feb20_benchmark(c: &mut Criterion) {
         group.bench_with_input(
             BenchmarkId::new("longest_sub_seq", format!("len-{}", input.len())),
             &input,
-            |b, input| b.iter(|| longest_sub_seq(black_box(&input))),
+            |b, input| b.iter(|| longest_sub_seq(black_box(input))),
         );
         group.bench_with_input(
             BenchmarkId::new("longest_sub_seq_map", format!("len-{}", input.len())),
             &input,
-            |b, input| b.iter(|| longest_sub_seq_map(black_box(&input))),
+            |b, input| b.iter(|| longest_sub_seq_map(black_box(input))),
         );
     }
 
@@ -58,7 +57,7 @@ fn mar7_benchmark(c: &mut Criterion) {
     let mut group = c.benchmark_group("mar_7");
 
     let thousand: Vec<i32> = include_str!("random-1000.txt")
-        .split(" ")
+        .split(' ')
         .map(|n| n.parse::<i32>().unwrap())
         .collect();
 
@@ -111,18 +110,28 @@ fn mar7_benchmark(c: &mut Criterion) {
     group.finish();
 }
 
-fn may2_benchmark(c: &mut Criterion) {
-    let mut group = c.benchmark_group("simple_autocorrect");
+fn fib_iterator_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("fib_iterator");
 
-    // Note: this requires ubuntu package wordlist or e.g.: wbritish to be installed
-    let words: Vec<String> = include_str!("/usr/share/dict/words").lines().map(|w| w.to_string()).collect();
-
-    group.bench_function("wbritish", |b| b.iter(|| sac(black_box(&words), black_box("berry"))));
+    for (n1, n2, len) in [(1, 1, 100), (140, 255, 150), (1, 1, 2000)] {
+        group.bench_function(len.to_string(), |b| {
+            b.iter(|| {
+                let fibs = FibIterator::new(n1, n2, len);
+                for n in fibs {
+                    let _x = n;
+                }
+            })
+        });
+    }
 
     group.finish();
 }
 
-criterion_group!(benches, feb13_benchmark, feb20_benchmark, mar7_benchmark, may2_benchmark);
+criterion_group!(
+    benches,
+    feb13_benchmark,
+    feb20_benchmark,
+    mar7_benchmark,
+    fib_iterator_benchmark
+);
 criterion_main!(benches);
-
-// TODO(Dan) - check benchmark result and also what else can be done. (optimize the thing.)
