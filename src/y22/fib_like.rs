@@ -52,9 +52,9 @@ impl Iterator for FibIterator {
 }
 
 #[cfg(test)]
-mod tests {
+mod fib_iterator_tests {
 
-    use super::*;
+    use super::FibIterator;
 
     #[test]
     fn test_question_cases() {
@@ -79,4 +79,63 @@ mod tests {
     }
 }
 
-// Extra credit: Given a sequence, determine if the sequence is “fibonacci-like”.
+/// Given a sequence, determine if the sequence is “Fibonacci-like”. A sequence is considered to be Fibonacci-like if:
+/// 1. It has at least 3 items
+/// 2. Each item is the sum of the previous two items
+///
+/// ```
+/// use iqotw::y22::fib_like::is_fibonacci_like;
+///
+/// assert!(is_fibonacci_like(&[1, 1, 2, 3]));
+/// assert!(is_fibonacci_like(&[10, 20, 30, 50]));
+/// assert!(!is_fibonacci_like(&[10, 20, 20, 10]));
+/// ```
+pub fn is_fibonacci_like(seq: &[usize]) -> bool {
+    if seq.len() < 3 || seq[0] > seq[1] {
+        return false;
+    }
+
+    let mut sum = seq[0] + seq[1];
+
+    for (idx, n) in seq.iter().enumerate().skip(2) {
+        if *n != sum {
+            return false;
+        }
+        sum -= seq[idx - 2];
+        sum += n;
+    }
+
+    true
+}
+
+#[cfg(test)]
+mod is_fibonacci_like_tests {
+    use super::*;
+
+    #[test]
+    fn test_question_cases() {
+        assert!(is_fibonacci_like(&[10, 20, 30, 50, 80]));
+        assert!(is_fibonacci_like(&[3, 7, 10, 17, 27]));
+    }
+
+    #[test]
+    fn test_fib_iterator_result() {
+        assert!(is_fibonacci_like(
+            &FibIterator::new(5, 9, 17).collect::<Vec<usize>>()
+        ))
+    }
+
+    #[test]
+    fn test_too_few_items() {
+        assert!(!is_fibonacci_like(&[]));
+        assert!(!is_fibonacci_like(&[1]));
+        assert!(!is_fibonacci_like(&[1, 1]));
+    }
+
+    #[test]
+    fn test_not_fibonacci_like() {
+        assert!(!is_fibonacci_like(&[5, 2, 3, 6]));
+        assert!(!is_fibonacci_like(&[1, 1, 2, 3, 5, 9]));
+        assert!(!is_fibonacci_like(&[5, 3, 8, 11, 19]));
+    }
+}
