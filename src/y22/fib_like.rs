@@ -49,6 +49,11 @@ impl Iterator for FibIterator {
             Some(res)
         }
     }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        let remaining = self.sequence_length - self.index;
+        (remaining, Some(remaining))
+    }
 }
 
 #[cfg(test)]
@@ -76,6 +81,20 @@ mod fib_iterator_tests {
             FibIterator::new(1, 1, 2).collect::<Vec<usize>>(),
             vec![1, 1]
         );
+    }
+
+    #[test]
+    fn test_size_hint() {
+        let mut fibs = FibIterator::new(10, 20, 3);
+        assert_eq!(fibs.size_hint(), (3, Some(3)));
+        fibs.next();
+        assert_eq!(fibs.size_hint(), (2, Some(2)));
+        fibs.next();
+        assert_eq!(fibs.size_hint(), (1, Some(1)));
+        fibs.next();
+        assert_eq!(fibs.size_hint(), (0, Some(0)));
+        fibs.next();
+        assert_eq!(fibs.size_hint(), (0, Some(0)));
     }
 }
 
