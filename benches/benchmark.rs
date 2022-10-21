@@ -1,5 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 
+use iqotw::y22::doors::*;
 use iqotw::y22::feb13::*;
 use iqotw::y22::feb20::*;
 use iqotw::y22::fib_like::*;
@@ -127,11 +128,24 @@ fn fib_iterator_benchmark(c: &mut Criterion) {
     group.finish();
 }
 
+fn pass_doors_benchmark(c: &mut Criterion) {
+    let mut group = c.benchmark_group("pass_doors");
+
+    for (n, size) in [(3, 7), (2, 10), (5, 15)] {
+        group.bench_function(format!("naive-{}-{}", n, size), |b| {
+            b.iter(|| pass_doors(black_box(n), black_box(size)));
+        });
+    }
+
+    group.finish();
+}
+
 criterion_group!(
     benches,
     feb13_benchmark,
     feb20_benchmark,
     mar7_benchmark,
-    fib_iterator_benchmark
+    fib_iterator_benchmark,
+    pass_doors_benchmark,
 );
 criterion_main!(benches);

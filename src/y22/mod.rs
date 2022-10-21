@@ -6,3 +6,4 @@ pub mod may2;
 pub mod ordinal;
 pub mod previous_fibonacci;
 pub mod truncate;
+pub mod doors;
